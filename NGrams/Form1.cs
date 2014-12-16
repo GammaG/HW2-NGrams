@@ -15,7 +15,7 @@ namespace NGrams
     public partial class Form1 : Form
     {
 
-        Thread loaderThread;
+        protected Thread loaderThread;
         public Form1()
         {
             InitializeComponent();
@@ -27,15 +27,13 @@ namespace NGrams
         {
             loaderThread = new Thread(new Loader().loadInformation);
             loaderThread.Start();
-                      
+                  
             
         }
 
 
 
-
-
-
+       
 
             private class Loader{
                 public void loadInformation(){
@@ -43,12 +41,17 @@ namespace NGrams
                       fileLoader.setConfig(Constant.ENG);
                       fileLoader.loadInformation();
                       Console.WriteLine(fileLoader.getStopWords());
+                      
                 }
             }
 
             private void btnPrint_Click(object sender, EventArgs e)
             {
-                loaderThread.Join();
+                if (loaderThread.IsAlive)
+                {
+                    resultsText.AppendText("\r\nLoading is still in progress.");
+                    return;
+                }
                 resultsText.AppendText(FileLoader.getInstance().getStopWords());
                 resultsText.AppendText(FileLoader.getInstance().getText());
 
