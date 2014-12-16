@@ -34,7 +34,7 @@ namespace NGrams
     
         public void setConfig(String language)
         {
-            if (language.Equals(Constant.ENG))
+            if (language.Equals("") | language.Equals(Constant.ENG))
             {
                 textLocation = Constant.ENG_TEXT;
                 stopWordsLocation = Constant.ENG_STOPWORDS;

@@ -15,16 +15,22 @@ namespace NGrams
     public partial class Form1 : Form
     {
 
+        private static String language = "";
         protected Thread loaderThread;
         public Form1()
         {
+           
             InitializeComponent();
+            languageBox.SelectedIndex = 0;
         }
 
 
 
         private void btnLoadF_Click(object sender, EventArgs e)
         {
+            if (languageBox.SelectedIndex.Equals("English"))
+                language = Constant.ENG;
+
             loaderThread = new Thread(new Loader().loadInformation);
             loaderThread.Start();
                   
@@ -38,7 +44,7 @@ namespace NGrams
             private class Loader{
                 public void loadInformation(){
                       FileLoader fileLoader = FileLoader.getInstance();
-                      fileLoader.setConfig(Constant.ENG);
+                      fileLoader.setConfig(language);
                       fileLoader.loadInformation();
                       Console.WriteLine(fileLoader.getStopWords());
                       
@@ -56,6 +62,8 @@ namespace NGrams
                 resultsText.AppendText(FileLoader.getInstance().getText());
 
             }
+
+          
 
         
     }
