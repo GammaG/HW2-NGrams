@@ -33,6 +33,8 @@
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.btnLoadF = new System.Windows.Forms.Button();
             this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.btnPrint = new System.Windows.Forms.Button();
+            this.resultsText = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,11 +64,31 @@
             this.chart.TabIndex = 1;
             this.chart.Text = "chart1";
             // 
+            // btnPrint
+            // 
+            this.btnPrint.Location = new System.Drawing.Point(12, 50);
+            this.btnPrint.Name = "btnPrint";
+            this.btnPrint.Size = new System.Drawing.Size(75, 23);
+            this.btnPrint.TabIndex = 2;
+            this.btnPrint.Text = "print";
+            this.btnPrint.UseVisualStyleBackColor = true;
+            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
+            // 
+            // resultsText
+            // 
+            this.resultsText.Location = new System.Drawing.Point(12, 123);
+            this.resultsText.Name = "resultsText";
+            this.resultsText.Size = new System.Drawing.Size(249, 229);
+            this.resultsText.TabIndex = 3;
+            this.resultsText.Text = "";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(707, 390);
+            this.Controls.Add(this.resultsText);
+            this.Controls.Add(this.btnPrint);
             this.Controls.Add(this.chart);
             this.Controls.Add(this.btnLoadF);
             this.Name = "Form1";
@@ -80,6 +102,8 @@
 
         private System.Windows.Forms.Button btnLoadF;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart;
+        private System.Windows.Forms.Button btnPrint;
+        private System.Windows.Forms.RichTextBox resultsText;
     }
 }
 

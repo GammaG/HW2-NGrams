@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NGrams
@@ -12,7 +13,7 @@ namespace NGrams
     {
         
         private int _bufferSize = 16384; 
-        private FileLoader fileLoader;
+        private static volatile FileLoader fileLoader;
         private String inputText = "";
         private String stopWords = "";
         private String textLocation = "";
@@ -23,7 +24,7 @@ namespace NGrams
 
         }
 
-        public FileLoader getInstance()
+        public static FileLoader getInstance()
         {
             if (fileLoader == null)
                 fileLoader = new FileLoader();
@@ -31,23 +32,26 @@ namespace NGrams
         }
 
     
-        private void setConfig(String language)
+        public void setConfig(String language)
         {
-            if (language.Equals(Constants.ENG))
+            if (language.Equals(Constant.ENG))
             {
-                textLocation = Constants.ENG_TEXT;
-                stopWordsLocation = Constants.ENG_STOPWORDS;
+                textLocation = Constant.ENG_TEXT;
+                stopWordsLocation = Constant.ENG_STOPWORDS;
             }
         }
 
-        private void loadInformation()
+        public void loadInformation()
         {
             if (textLocation.Equals("") | stopWordsLocation.Equals(""))
                 throw new InvalidDataException("You didn't set a config.");
             try
             {
-                loadText(textLocation);
-                loadStopWords(stopWordsLocation);
+                Thread loadInformationThread = new Thread(fileLoader.loadText);
+                Thread loadStopWordsThread = new Thread(fileLoader.loadStopWords);
+                loadInformationThread.Start();
+                loadStopWordsThread.Start();
+             
             }
             catch (Exception ex)
             {
@@ -56,10 +60,10 @@ namespace NGrams
         }
 
 
-        private void loadText(String location)
+        private void loadText()
         {
             StringBuilder builder = new StringBuilder();
-            FileStream fStream = new FileStream(location, FileMode.Open, FileAccess.Read);
+            FileStream fStream = new FileStream(textLocation, FileMode.Open, FileAccess.Read);
             using (StreamReader streamReader = new StreamReader(fStream))
             {
                 char[] fileContents = new char[_bufferSize];
@@ -74,15 +78,17 @@ namespace NGrams
                     builder.Append(fileContents);
                     charsRead = streamReader.Read(fileContents, 0, _bufferSize);
                 }
+                streamReader.Close();
+                fStream.Close();
             }
             inputText = builder.ToString();
 
         }
 
-        private void loadStopWords(String location)
+        private void loadStopWords()
         {
             StringBuilder builder = new StringBuilder();
-            FileStream fStream = new FileStream(location, FileMode.Open, FileAccess.Read);
+            FileStream fStream = new FileStream(stopWordsLocation, FileMode.Open, FileAccess.Read);
             using (StreamReader streamReader = new StreamReader(fStream))
             {
                 char[] fileContents = new char[_bufferSize];
@@ -97,9 +103,21 @@ namespace NGrams
                     builder.Append(fileContents);
                     charsRead = streamReader.Read(fileContents, 0, _bufferSize);
                 }
+                streamReader.Close();
+                fStream.Close();
             }
             stopWords = builder.ToString();
+            
+        }
 
+        public String getStopWords()
+        {
+            return stopWords;
+        }
+
+        public String getText()
+        {
+            return inputText;
         }
     }
 
