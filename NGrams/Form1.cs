@@ -33,7 +33,19 @@ namespace NGrams
 
             loaderThread = new Thread(new Loader().loadInformation);
             loaderThread.Start();
-                  
+
+            while (loaderThread.IsAlive)
+            {
+                Thread.Sleep(1000);
+            }
+            
+            ListRender listRender = ListRender.getInstance();
+            listRender.renderSentences(FileLoader.getInstance().getText());
+            listRender.renderStopWords(FileLoader.getInstance().getStopWords());
+
+            resultsText.AppendText(listRender.getSentences().Count + " sentences were loaded.\r\n");
+            resultsText.AppendText(listRender.getStopWords().Count + " stopwords were loaded.\r\n");
+                      
             
         }
 
@@ -46,20 +58,14 @@ namespace NGrams
                       FileLoader fileLoader = FileLoader.getInstance();
                       fileLoader.setConfig(language);
                       fileLoader.loadInformation();
-                      Console.WriteLine(fileLoader.getStopWords());
+                      
                       
                 }
             }
 
             private void btnPrint_Click(object sender, EventArgs e)
             {
-                if (loaderThread.IsAlive)
-                {
-                    resultsText.AppendText("\r\nLoading is still in progress.");
-                    return;
-                }
-                resultsText.AppendText(FileLoader.getInstance().getStopWords());
-                resultsText.AppendText(FileLoader.getInstance().getText());
+               
 
             }
 
