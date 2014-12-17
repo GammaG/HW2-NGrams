@@ -36,7 +36,7 @@ namespace NGrams
 
             while (loaderThread.IsAlive)
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(250);
             }
             
             ListRender listRender = ListRender.getInstance();
