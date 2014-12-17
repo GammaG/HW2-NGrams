@@ -16,7 +16,7 @@ namespace NGrams
     {
 
         private static String language = "";
-        protected Thread loaderThread;
+       
         public Form1()
         {
            
@@ -31,7 +31,7 @@ namespace NGrams
             if (languageBox.SelectedIndex.Equals("English"))
                 language = Constant.ENG;
 
-            loaderThread = new Thread(new Loader().loadInformation);
+            Thread loaderThread = new Thread(new Loader().loadInformation);
             loaderThread.Start();
 
             while (loaderThread.IsAlive)
