@@ -28,6 +28,10 @@ namespace NGrams
         }
 
         public void renderSentences(String text){
+            if (sentences.Count > 0)
+            {
+                sentences.Clear();
+            }
             Regex regex = new Regex("[\\n]+");
             
             string[] array = regex.Split(text);
@@ -37,6 +41,10 @@ namespace NGrams
 
         public void renderStopWords(String stopwords)
         {
+            if (stopWords.Count > 0)
+            {
+                stopWords.Clear();
+            }
             Regex regex = new Regex("[\\n]+");
 
             string[] array = regex.Split(stopwords);
