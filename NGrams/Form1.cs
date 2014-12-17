@@ -47,7 +47,7 @@ namespace NGrams
             resultsText.AppendText(listRender.getSentences().Count + " sentences were loaded.\r\n");
             resultsText.AppendText(listRender.getStopWords().Count + " stopwords were loaded.\r\n");
 
-            resultsText.AppendText("Stopwords active.\r\n");
+            resultsText.AppendText("StopWordsFilter active please wait...\r\n");
             textFilterThread = new Thread(new StopWorldFilter().startCleaning);
             textFilterThread.Start();
 
@@ -61,7 +61,7 @@ namespace NGrams
             {
                 Thread.Sleep(250);
             }
-            AppendTextBox("Filter is done.");
+            AppendTextBox("StopWordsFilter has finished.\r\n");
         }
        
 
