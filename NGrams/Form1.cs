@@ -16,6 +16,7 @@ namespace NGrams
     {
 
         private static String language = "";
+        private static Thread textFilterThread;
        
         public Form1()
         {
@@ -45,12 +46,23 @@ namespace NGrams
 
             resultsText.AppendText(listRender.getSentences().Count + " sentences were loaded.\r\n");
             resultsText.AppendText(listRender.getStopWords().Count + " stopwords were loaded.\r\n");
-                      
-            
+
+            resultsText.AppendText("Stopwords active.\r\n");
+            textFilterThread = new Thread(new StopWorldFilter().startCleaning);
+            textFilterThread.Start();
+
+            new Thread(checkThread).Start();
         }
 
 
-
+        public void checkThread()
+        {
+            while (textFilterThread.IsAlive)
+            {
+                Thread.Sleep(250);
+            }
+            AppendTextBox("Filter is done.");
+        }
        
 
             private class Loader{
@@ -67,6 +79,22 @@ namespace NGrams
             {
                
 
+            }
+
+            private void addTextToResult(String message)
+            {
+                resultsText.AppendText(message + "\r\n");
+            }
+
+            public void AppendTextBox(string value)
+            {
+                if (InvokeRequired)
+                {
+                    this.Invoke(new Action<string>(AppendTextBox), new object[] { value });
+                    return;
+                }
+                //ActiveForm.Text += value;
+                addTextToResult(value);
             }
 
           

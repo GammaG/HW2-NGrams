@@ -7,3 +7,12 @@ C:\Uni\Visual Studio\NGrams\NGrams\obj\Debug\NGrams.Properties.Resources.resourc
 C:\Uni\Visual Studio\NGrams\NGrams\obj\Debug\NGrams.csproj.GenerateResource.Cache
 C:\Uni\Visual Studio\NGrams\NGrams\obj\Debug\NGrams.exe
 C:\Uni\Visual Studio\NGrams\NGrams\obj\Debug\NGrams.pdb
+C:\Uni\Visual Studio\HW2-NGrams\NGrams\bin\Debug\NGrams.exe.config
+C:\Uni\Visual Studio\HW2-NGrams\NGrams\obj\Debug\NGrams.exe
+C:\Uni\Visual Studio\HW2-NGrams\NGrams\obj\Debug\NGrams.pdb
+C:\Uni\Visual Studio\HW2-NGrams\NGrams\bin\Debug\NGrams.exe
+C:\Uni\Visual Studio\HW2-NGrams\NGrams\bin\Debug\NGrams.pdb
+C:\Uni\Visual Studio\HW2-NGrams\NGrams\obj\Debug\NGrams.csprojResolveAssemblyReference.cache
+C:\Uni\Visual Studio\HW2-NGrams\NGrams\obj\Debug\NGrams.Form1.resources
+C:\Uni\Visual Studio\HW2-NGrams\NGrams\obj\Debug\NGrams.Properties.Resources.resources
+C:\Uni\Visual Studio\HW2-NGrams\NGrams\obj\Debug\NGrams.csproj.GenerateResource.Cache

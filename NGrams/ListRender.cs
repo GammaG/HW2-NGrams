@@ -11,6 +11,7 @@ namespace NGrams
     {
         private List<String> sentences = new List<string>();
         private List<String> stopWords = new List<string>();
+        private List<String> sentencesClean = new List<string>();
         private static ListRender listRender; 
 
         private ListRender()
@@ -61,6 +62,16 @@ namespace NGrams
         public List<String> getStopWords()
         {
             return stopWords;
+        }
+
+        public List<String> getSentencesClean()
+        {
+            return sentencesClean;
+        }
+
+        public void setSentencesCleaned(List<String> list)
+        {
+            sentencesClean = list;
         }
     }
 }
