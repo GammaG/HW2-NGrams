@@ -24,12 +24,18 @@ namespace NGrams
 
         private void startFiltering()
         {
-            for (int i = 0; i < sentences.Count; i++)
-            {
-                String s = sentences[i];
-                s = filterNumberAndSeperator(s);
-                sentences[i] = filterStopWords(s);
-            }
+            
+                for (int j = 0; j < stopwords.Count; j++)
+                {
+                    stopwords[j] = removeUnusedSigns(stopwords[j]);
+                }
+
+                for (int i = 0; i < sentences.Count; i++)
+                {
+                    String s = sentences[i];
+                    s = filterNumberAndSeperator(s);
+                    sentences[i] = filterStopWords(s);
+                }
         }
 
         private String filterNumberAndSeperator(String s)
@@ -45,13 +51,28 @@ namespace NGrams
             return array[0];
         }
 
+        private String removeUnusedSigns(String s)
+        {
+           return Regex.Replace(s, "\\r", String.Empty);
+        }
+
         private String filterStopWords(String s)
         {
-            foreach (String stopWord in stopwords)
-            {
-                s.Replace(stopWord, "");
-            }
-            return s;
+            String temp = s.ToLower();
+
+            string pattern = "";
+
+            //foreach (string word in stopwords)
+            //{
+
+                pattern = " (" + string.Join("|", stopwords) + ") ";
+                //pattern = @"\b" + word + @"\b";
+                temp = Regex.Replace(temp, pattern, " ");
+                temp = Regex.Replace(temp, "[\\r.]", String.Empty);
+
+            //}
+
+            return temp;
         }
 
     }

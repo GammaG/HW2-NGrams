@@ -44,6 +44,8 @@ namespace NGrams
             listRender.renderSentences(FileLoader.getInstance().getText());
             listRender.renderStopWords(FileLoader.getInstance().getStopWords());
 
+            Thread.Sleep(250);
+
             resultsText.AppendText(listRender.getSentences().Count + " sentences were loaded.\r\n");
             resultsText.AppendText(listRender.getStopWords().Count + " stopwords were loaded.\r\n");
 
@@ -77,7 +79,9 @@ namespace NGrams
 
             private void btnPrint_Click(object sender, EventArgs e)
             {
-               
+                List<String> temp = ListRender.getInstance().getSentencesClean();
+                foreach (String s in temp)
+                    Console.WriteLine(s);
 
             }
 
