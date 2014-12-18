@@ -41,7 +41,16 @@ namespace NGrams
 
         public List<int> searchNGram(String ngram)
         {
-            return ngramTable[ngram];
+            List<int> temp = new List<int>();
+            try
+            {
+                temp = ngramTable[ngram];
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return temp;
 
         }
 

@@ -155,7 +155,7 @@ namespace NGrams
                    return;
                }
 
-               new Thread(search);
+               new Thread(search).Start();
             }
 
             private void search()
