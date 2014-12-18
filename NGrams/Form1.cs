@@ -17,6 +17,7 @@ namespace NGrams
 
         private static String language = "";
         private static Thread textFilterThread;
+        private static Thread loaderThread;
        
         public Form1()
         {
@@ -32,32 +33,40 @@ namespace NGrams
             if (languageBox.SelectedIndex.Equals("English"))
                 language = Constant.ENG;
 
-            Thread loaderThread = new Thread(new Loader().loadInformation);
+            loaderThread = new Thread(new Loader().loadInformation);
             loaderThread.Start();
 
+
+            new Thread(checkThreadLoader).Start();     
+
+            
+        }
+
+        public void checkThreadLoader()
+        {
             while (loaderThread.IsAlive)
             {
                 Thread.Sleep(250);
             }
-            
+            //AppendTextBox("StopWordsFilter has finished.\r\n");
+            Thread.Sleep(500);
+
             ListRender listRender = ListRender.getInstance();
             listRender.renderSentences(FileLoader.getInstance().getText());
             listRender.renderStopWords(FileLoader.getInstance().getStopWords());
 
-            Thread.Sleep(250);
+            AppendTextBox(listRender.getSentences().Count + " sentences were loaded.");
+            AppendTextBox(listRender.getStopWords().Count + " stopwords were loaded.");
 
-            resultsText.AppendText(listRender.getSentences().Count + " sentences were loaded.\r\n");
-            resultsText.AppendText(listRender.getStopWords().Count + " stopwords were loaded.\r\n");
-
-            resultsText.AppendText("StopWordsFilter active please wait...\r\n");
+            AppendTextBox("StopWordsFilter active please wait...");
             textFilterThread = new Thread(new StopWorldFilter().startCleaning);
             textFilterThread.Start();
 
-            new Thread(checkThread).Start();
+            new Thread(checkThreadFilter).Start();
         }
 
 
-        public void checkThread()
+        public void checkThreadFilter()
         {
             while (textFilterThread.IsAlive)
             {
