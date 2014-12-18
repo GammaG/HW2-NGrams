@@ -54,6 +54,8 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="ListRender.cs" />
+    <Compile Include="NGramGenerator.cs" />
+    <Compile Include="NGramTable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StopWordFilter.cs" />

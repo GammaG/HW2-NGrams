@@ -18,10 +18,11 @@ namespace NGrams
         private static String language = "";
         private static Thread textFilterThread;
         private static Thread loaderThread;
+        private static Thread generateNGramsThread;
+        private Boolean dataValid = false;
        
         public Form1()
         {
-           
             InitializeComponent();
             languageBox.SelectedIndex = 0;
         }
@@ -33,6 +34,10 @@ namespace NGrams
             if (languageBox.SelectedIndex.Equals("English"))
                 language = Constant.ENG;
 
+            if (dataValid)
+            {
+                appendTextBox("New Datasource has been set, please run NGram generation again.");
+            }
             loaderThread = new Thread(new Loader().loadInformation);
             loaderThread.Start();
 
@@ -55,14 +60,15 @@ namespace NGrams
             listRender.renderSentences(FileLoader.getInstance().getText());
             listRender.renderStopWords(FileLoader.getInstance().getStopWords());
 
-            AppendTextBox(listRender.getSentences().Count + " sentences were loaded.");
-            AppendTextBox(listRender.getStopWords().Count + " stopwords were loaded.");
+            appendTextBox(listRender.getSentences().Count + " sentences were loaded.");
+            appendTextBox(listRender.getStopWords().Count + " stopwords were loaded.");
 
-            AppendTextBox("StopWordsFilter active please wait...");
+            appendTextBox("StopWordsFilter active please wait...");
             textFilterThread = new Thread(new StopWorldFilter().startCleaning);
             textFilterThread.Start();
 
             new Thread(checkThreadFilter).Start();
+            dataValid = true;
         }
 
 
@@ -72,7 +78,7 @@ namespace NGrams
             {
                 Thread.Sleep(250);
             }
-            AppendTextBox("StopWordsFilter has finished.\r\n");
+            appendTextBox("StopWordsFilter has finished.\r\n");
         }
        
 
@@ -99,19 +105,46 @@ namespace NGrams
                 resultsText.AppendText(message + "\r\n");
             }
 
-            public void AppendTextBox(string value)
+            public void appendTextBox(string value)
             {
                 if (InvokeRequired)
                 {
-                    this.Invoke(new Action<string>(AppendTextBox), new object[] { value });
+                    this.Invoke(new Action<string>(appendTextBox), new object[] { value });
                     return;
                 }
                 //ActiveForm.Text += value;
                 addTextToResult(value);
             }
 
-          
+            private void btnNGrams_Click(object sender, EventArgs e)
+            {
+                if(!dataValid){
+                    appendTextBox("There is no input text available, please load data first.");
+                    return;
+                }
+                appendTextBox("NGram generation started.");
+                generateNGramsThread = new Thread(genNGrams);
+                generateNGramsThread.Start();
 
-        
+                new Thread(checkNGramGeneration).Start();
+
+
+            }
+
+            private void genNGrams()
+            {
+                new NGramGenerator().startGenNGrams();
+            }
+
+            private void checkNGramGeneration()
+            {
+                while (generateNGramsThread.IsAlive)
+                {
+                    Thread.Sleep(250);
+                }
+                appendTextBox("NGram generation has finished.");
+            }
+
+
     }
 }
