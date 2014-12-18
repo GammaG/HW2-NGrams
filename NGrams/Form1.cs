@@ -19,6 +19,7 @@ namespace NGrams
         private static Thread textFilterThread;
         private static Thread loaderThread;
         private static Thread generateNGramsThread;
+        private static String input; 
         private Boolean dataValid = false;
        
         public Form1()
@@ -47,7 +48,7 @@ namespace NGrams
             
         }
 
-        public void checkThreadLoader()
+        private void checkThreadLoader()
         {
             while (loaderThread.IsAlive)
             {
@@ -72,7 +73,7 @@ namespace NGrams
         }
 
 
-        public void checkThreadFilter()
+        private void checkThreadFilter()
         {
             while (textFilterThread.IsAlive)
             {
@@ -105,7 +106,7 @@ namespace NGrams
                 resultsText.AppendText(message + "\r\n");
             }
 
-            public void appendTextBox(string value)
+            private void appendTextBox(string value)
             {
                 if (InvokeRequired)
                 {
@@ -143,6 +144,41 @@ namespace NGrams
                     Thread.Sleep(250);
                 }
                 appendTextBox("NGram generation has finished.");
+            }
+
+            private void btnSearch_Click(object sender, EventArgs e)
+            {
+               input = searchBox.Text;
+               if (input.Length == 0)
+               {
+                   appendTextBox("Your searchTerm is to short.");
+                   return;
+               }
+
+               new Thread(search);
+            }
+
+            private void search()
+            {
+                NGramTable table = NGramTable.getInstance();
+                if (table.getCount() == 0)
+                {
+                    appendTextBox("There are no NGrams available.");
+                    return;
+                }
+               List<int> list = table.searchNGram(input);
+               if (list.Count == 0)
+               {
+                   appendTextBox("Your term: " + input + " wasn't found.");
+                   return;
+               }
+               String temp = "Your NGram: "+input+" was found in line ";
+               foreach (int i in list)
+               {
+                   temp += i+1 + ", ";
+               }
+
+               appendTextBox(temp.Substring(0, temp.Length - 2));
             }
 
 

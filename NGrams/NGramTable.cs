@@ -9,7 +9,7 @@ namespace NGrams
     class NGramTable
     {
         private Dictionary<String, List<int>> ngramTable = new Dictionary<String,List<int>>();
-        private static NGramTable nGramTable;
+        private volatile static NGramTable nGramTable;
 
         private NGramTable()
         {
@@ -39,6 +39,16 @@ namespace NGrams
             }
         }
 
+        public List<int> searchNGram(String ngram)
+        {
+            return ngramTable[ngram];
+
+        }
+
+        public int getCount()
+        {
+            return ngramTable.Keys.Count;
+        }
 
     }
 }

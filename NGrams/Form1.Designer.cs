@@ -37,6 +37,8 @@
             this.resultsText = new System.Windows.Forms.RichTextBox();
             this.languageBox = new System.Windows.Forms.ComboBox();
             this.btnNGrams = new System.Windows.Forms.Button();
+            this.searchBox = new System.Windows.Forms.TextBox();
+            this.btnSearch = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             this.SuspendLayout();
             // 
@@ -104,11 +106,30 @@
             this.btnNGrams.UseVisualStyleBackColor = true;
             this.btnNGrams.Click += new System.EventHandler(this.btnNGrams_Click);
             // 
+            // searchBox
+            // 
+            this.searchBox.Location = new System.Drawing.Point(151, 44);
+            this.searchBox.Name = "searchBox";
+            this.searchBox.Size = new System.Drawing.Size(121, 20);
+            this.searchBox.TabIndex = 6;
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(151, 71);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(75, 23);
+            this.btnSearch.TabIndex = 7;
+            this.btnSearch.Text = "Search";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(707, 390);
+            this.Controls.Add(this.btnSearch);
+            this.Controls.Add(this.searchBox);
             this.Controls.Add(this.btnNGrams);
             this.Controls.Add(this.languageBox);
             this.Controls.Add(this.resultsText);
@@ -119,6 +140,7 @@
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -130,6 +152,8 @@
         private System.Windows.Forms.RichTextBox resultsText;
         private System.Windows.Forms.ComboBox languageBox;
         private System.Windows.Forms.Button btnNGrams;
+        private System.Windows.Forms.TextBox searchBox;
+        private System.Windows.Forms.Button btnSearch;
     }
 }
 
