@@ -95,10 +95,20 @@ namespace NGrams
 
             private void btnPrint_Click(object sender, EventArgs e)
             {
+                new Thread(printSentencesOnConsole).Start();
+
+            }
+
+            private void printSentencesOnConsole()
+            {
+                if (textFilterThread.IsAlive | loaderThread.IsAlive | generateNGramsThread.IsAlive)
+                {
+                    appendTextBox("There is currently a process running, please wait until it has finished.");
+                    return;
+                }
                 List<String> temp = ListRender.getInstance().getSentencesClean();
                 foreach (String s in temp)
                     Console.WriteLine(s);
-
             }
 
             private void addTextToResult(String message)

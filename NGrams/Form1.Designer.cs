@@ -70,11 +70,11 @@
             // 
             // btnPrint
             // 
-            this.btnPrint.Location = new System.Drawing.Point(12, 70);
+            this.btnPrint.Location = new System.Drawing.Point(12, 358);
             this.btnPrint.Name = "btnPrint";
-            this.btnPrint.Size = new System.Drawing.Size(75, 23);
+            this.btnPrint.Size = new System.Drawing.Size(150, 23);
             this.btnPrint.TabIndex = 2;
-            this.btnPrint.Text = "print";
+            this.btnPrint.Text = "print sentences on console";
             this.btnPrint.UseVisualStyleBackColor = true;
             this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
