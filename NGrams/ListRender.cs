@@ -73,5 +73,19 @@ namespace NGrams
         {
             sentencesClean = list;
         }
+
+        public String getSentenceFromCollection(int index)
+        {
+            String result = "";
+            try
+            {
+                result = sentences[index];
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return result;
+        }
     }
 }

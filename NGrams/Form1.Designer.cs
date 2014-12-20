@@ -1,6 +1,6 @@
 ﻿namespace NGrams
 {
-    partial class Form1
+    partial class MainFrame
     {
         /// <summary>
         /// Erforderliche Designervariable.
@@ -37,33 +37,36 @@
             this.btnSearch = new System.Windows.Forms.Button();
             this.btn_print_result = new System.Windows.Forms.Button();
             this.btn_abort = new System.Windows.Forms.Button();
+            this.btnSearchByTerm = new System.Windows.Forms.Button();
+            this.btnSeachForSimilar = new System.Windows.Forms.Button();
+            this.btn_printSentenceByID = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnLoadF
             // 
             this.btnLoadF.Location = new System.Drawing.Point(12, 35);
             this.btnLoadF.Name = "btnLoadF";
-            this.btnLoadF.Size = new System.Drawing.Size(75, 23);
+            this.btnLoadF.Size = new System.Drawing.Size(121, 23);
             this.btnLoadF.TabIndex = 0;
-            this.btnLoadF.Text = "load Files";
+            this.btnLoadF.Text = "Load Files";
             this.btnLoadF.UseVisualStyleBackColor = true;
             this.btnLoadF.Click += new System.EventHandler(this.btnLoadF_Click);
             // 
             // btnPrint
             // 
-            this.btnPrint.Location = new System.Drawing.Point(561, 12);
+            this.btnPrint.Location = new System.Drawing.Point(170, 88);
             this.btnPrint.Name = "btnPrint";
-            this.btnPrint.Size = new System.Drawing.Size(134, 22);
+            this.btnPrint.Size = new System.Drawing.Size(181, 22);
             this.btnPrint.TabIndex = 2;
-            this.btnPrint.Text = "print all clean sentences";
+            this.btnPrint.Text = "Print all sentences in the collection";
             this.btnPrint.UseVisualStyleBackColor = true;
             this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
             // resultsText
             // 
-            this.resultsText.Location = new System.Drawing.Point(12, 123);
+            this.resultsText.Location = new System.Drawing.Point(12, 116);
             this.resultsText.Name = "resultsText";
-            this.resultsText.Size = new System.Drawing.Size(683, 255);
+            this.resultsText.Size = new System.Drawing.Size(683, 262);
             this.resultsText.TabIndex = 3;
             this.resultsText.Text = "";
             // 
@@ -81,9 +84,9 @@
             // 
             this.btnNGrams.Location = new System.Drawing.Point(12, 64);
             this.btnNGrams.Name = "btnNGrams";
-            this.btnNGrams.Size = new System.Drawing.Size(75, 23);
+            this.btnNGrams.Size = new System.Drawing.Size(121, 23);
             this.btnNGrams.TabIndex = 5;
-            this.btnNGrams.Text = "gen NGrams";
+            this.btnNGrams.Text = "Generate NGrams";
             this.btnNGrams.UseVisualStyleBackColor = true;
             this.btnNGrams.Click += new System.EventHandler(this.btnNGrams_Click);
             // 
@@ -91,44 +94,76 @@
             // 
             this.searchBox.Location = new System.Drawing.Point(171, 12);
             this.searchBox.Name = "searchBox";
-            this.searchBox.Size = new System.Drawing.Size(344, 20);
+            this.searchBox.Size = new System.Drawing.Size(517, 20);
             this.searchBox.TabIndex = 6;
             // 
             // btnSearch
             // 
             this.btnSearch.Location = new System.Drawing.Point(171, 38);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(75, 23);
+            this.btnSearch.Size = new System.Drawing.Size(180, 23);
             this.btnSearch.TabIndex = 7;
-            this.btnSearch.Text = "Search";
+            this.btnSearch.Text = "Search for NGram";
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // btn_print_result
             // 
-            this.btn_print_result.Location = new System.Drawing.Point(252, 38);
+            this.btn_print_result.Location = new System.Drawing.Point(357, 88);
             this.btn_print_result.Name = "btn_print_result";
-            this.btn_print_result.Size = new System.Drawing.Size(142, 23);
+            this.btn_print_result.Size = new System.Drawing.Size(158, 23);
             this.btn_print_result.TabIndex = 8;
-            this.btn_print_result.Text = "print found sentences";
+            this.btn_print_result.Text = "Print found Sentences";
             this.btn_print_result.UseVisualStyleBackColor = true;
             this.btn_print_result.Click += new System.EventHandler(this.btn_print_result_Click);
             // 
             // btn_abort
             // 
-            this.btn_abort.Location = new System.Drawing.Point(592, 40);
+            this.btn_abort.Location = new System.Drawing.Point(523, 89);
             this.btn_abort.Name = "btn_abort";
-            this.btn_abort.Size = new System.Drawing.Size(103, 21);
+            this.btn_abort.Size = new System.Drawing.Size(165, 21);
             this.btn_abort.TabIndex = 9;
-            this.btn_abort.Text = "abort printing";
+            this.btn_abort.Text = "Abort Printing";
             this.btn_abort.UseVisualStyleBackColor = true;
             this.btn_abort.Click += new System.EventHandler(this.btn_abort_Click);
             // 
-            // Form1
+            // btnSearchByTerm
+            // 
+            this.btnSearchByTerm.Location = new System.Drawing.Point(357, 38);
+            this.btnSearchByTerm.Name = "btnSearchByTerm";
+            this.btnSearchByTerm.Size = new System.Drawing.Size(158, 23);
+            this.btnSearchByTerm.TabIndex = 10;
+            this.btnSearchByTerm.Text = "Search by Term";
+            this.btnSearchByTerm.UseVisualStyleBackColor = true;
+            // 
+            // btnSeachForSimilar
+            // 
+            this.btnSeachForSimilar.Location = new System.Drawing.Point(523, 38);
+            this.btnSeachForSimilar.Name = "btnSeachForSimilar";
+            this.btnSeachForSimilar.Size = new System.Drawing.Size(165, 23);
+            this.btnSeachForSimilar.TabIndex = 11;
+            this.btnSeachForSimilar.Text = "Search Similar Sentences";
+            this.btnSeachForSimilar.UseVisualStyleBackColor = true;
+            this.btnSeachForSimilar.Click += new System.EventHandler(this.btnSeachForSimilar_Click);
+            // 
+            // btn_printSentenceByID
+            // 
+            this.btn_printSentenceByID.Location = new System.Drawing.Point(171, 63);
+            this.btn_printSentenceByID.Name = "btn_printSentenceByID";
+            this.btn_printSentenceByID.Size = new System.Drawing.Size(180, 23);
+            this.btn_printSentenceByID.TabIndex = 12;
+            this.btn_printSentenceByID.Text = "Print Sentence by given ID";
+            this.btn_printSentenceByID.UseVisualStyleBackColor = true;
+            this.btn_printSentenceByID.Click += new System.EventHandler(this.btn_printSentenceByID_Click);
+            // 
+            // MainFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(707, 390);
+            this.Controls.Add(this.btn_printSentenceByID);
+            this.Controls.Add(this.btnSeachForSimilar);
+            this.Controls.Add(this.btnSearchByTerm);
             this.Controls.Add(this.btn_abort);
             this.Controls.Add(this.btn_print_result);
             this.Controls.Add(this.btnSearch);
@@ -138,7 +173,7 @@
             this.Controls.Add(this.resultsText);
             this.Controls.Add(this.btnPrint);
             this.Controls.Add(this.btnLoadF);
-            this.Name = "Form1";
+            this.Name = "MainFrame";
             this.Text = "Form1";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -156,6 +191,9 @@
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Button btn_print_result;
         private System.Windows.Forms.Button btn_abort;
+        private System.Windows.Forms.Button btnSearchByTerm;
+        private System.Windows.Forms.Button btnSeachForSimilar;
+        private System.Windows.Forms.Button btn_printSentenceByID;
     }
 }
 

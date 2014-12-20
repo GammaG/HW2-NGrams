@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,7 +13,7 @@ using System.Windows.Forms;
 
 namespace NGrams
 {
-    public partial class Form1 : Form
+    public partial class MainFrame : Form
     {
 
         private static String language = "";
@@ -20,11 +21,12 @@ namespace NGrams
         private static Thread loaderThread;
         private static Thread generateNGramsThread;
         private static Thread printCleanSentencesThread;
+        private static Thread printResultSentencesThread;
         private static String input; 
         private Boolean dataValid = false;
         private static List<int> resultList = new List<int>();
        
-        public Form1()
+        public MainFrame()
         {
             InitializeComponent();
             languageBox.SelectedIndex = 0;
@@ -97,19 +99,19 @@ namespace NGrams
 
             private void btnPrint_Click(object sender, EventArgs e)
             {
-                printCleanSentencesThread = new Thread(printSentencesOnConsole);
+                printCleanSentencesThread = new Thread(printAllSentences);
                 printCleanSentencesThread.Start();
 
             }
 
-            private void printSentencesOnConsole()
+            private void printAllSentences()
             {
                 if (textFilterThread.IsAlive | loaderThread.IsAlive | generateNGramsThread.IsAlive)
                 {
                     appendTextBox("There is currently a process running, please wait until it has finished.");
                     return;
                 }
-                List<String> temp = ListRender.getInstance().getSentencesClean();
+                List<String> temp = ListRender.getInstance().getSentences();
                 foreach (String s in temp)
                     appendTextBox(s);
             }
@@ -178,7 +180,7 @@ namespace NGrams
 
             private void search()
             {
-                if (textFilterThread.IsAlive | loaderThread.IsAlive | generateNGramsThread.IsAlive)
+                if (textFilterThread.IsAlive | loaderThread.IsAlive | generateNGramsThread.IsAlive )
                 {
                     appendTextBox("There is currently a process running, please wait until it has finished.");
                     return;
@@ -207,7 +209,8 @@ namespace NGrams
 
             private void btn_print_result_Click(object sender, EventArgs e)
             {
-                new Thread(printResult).Start();
+              printResultSentencesThread = new Thread(printResult);
+              printResultSentencesThread.Start();
             }
 
         private void printResult(){
@@ -228,6 +231,99 @@ namespace NGrams
         {
             if (printCleanSentencesThread.IsAlive)
                 printCleanSentencesThread.Abort();
+            else if (printResultSentencesThread.IsAlive)
+                printResultSentencesThread.Abort();
+        }
+
+        private void btnSeachForSimilar_Click(object sender, EventArgs e)
+        {
+
+            input = searchBox.Text;
+            if (input.Length == 0 )
+            {
+                appendTextBox("Your searchTerm is to short.");
+                return;
+            }
+
+            Match match = Regex.Match(input, "[0-9]+");
+            if (!match.Success)
+            {
+                appendTextBox("Please enter a number out of the collection to match for.");
+            }
+
+            int num = Convert.ToInt32(input);
+            int temp = ListRender.getInstance().getSentencesClean().Count;
+            if (num < 0 | num > temp)
+            {
+                appendTextBox("Your choosen sentence does not exist in the collection, max index is "+temp);
+            }
+
+            appendTextBox("Your sentence is: \"" + ListRender.getInstance().getSentenceFromCollection(num)+"\"\r\n");
+
+            new Thread(searchForSimilarSentence).Start();
+           
+        }
+        private void searchForSimilarSentence()
+        {
+            if (textFilterThread.IsAlive | loaderThread.IsAlive | generateNGramsThread.IsAlive)
+            {
+                appendTextBox("There is currently a process running, please wait until it has finished.");
+                return;
+            }
+            NGramTable table = NGramTable.getInstance();
+            if (table.getCount() == 0)
+            {
+                appendTextBox("There are no NGrams available.");
+                return;
+            }
+
+            resultList = table.searchForSimilarSentence(input);
+            if (resultList.Count == 0)
+            {
+                appendTextBox("No sentences similar to your choosen: \"" + input + "\" has been found.");
+                return;
+            }
+
+                    
+            String temp = "Your sentence: \"" + input + "\" is similar to: ";
+            foreach (int i in resultList)
+            {
+                temp += i + 1 + ", ";
+            }
+
+            appendTextBox(temp.Substring(0, temp.Length - 2));
+
+        }
+
+        private void btn_printSentenceByID_Click(object sender, EventArgs e)
+        {
+
+            if (textFilterThread.IsAlive | loaderThread.IsAlive | generateNGramsThread.IsAlive)
+            {
+                appendTextBox("There is currently a process running, please wait until it has finished.");
+                return;
+            }
+            input = searchBox.Text;
+            if (input.Length == 0)
+            {
+                appendTextBox("Your searchTerm is to short.");
+                return;
+            }
+
+            Match match = Regex.Match(input, "[0-9]+");
+            if (!match.Success)
+            {
+                appendTextBox("Please enter a number out of the collection to match for.");
+            }
+
+            int num = Convert.ToInt32(input);
+            int temp = ListRender.getInstance().getSentencesClean().Count;
+            if (num < 0 | num > temp)
+            {
+                appendTextBox("Your choosen sentence does not exist in the collection, max index is " + temp);
+            }
+
+            appendTextBox(ListRender.getInstance().getSentenceFromCollection(num));
         }
 
 

@@ -60,5 +60,31 @@ namespace NGrams
             return ngramTable.Keys.Count;
         }
 
+        public List<int> searchForSimilarSentence(String number)
+        {
+            List<int> result = new List<int>();
+
+            try
+            {
+                int num = Convert.ToInt32(number);
+                List<String> sentences = ListRender.getInstance().getSentencesClean();
+                String searchTerm = sentences[num];
+                for (int i = 0; i < sentences.Count; i++)
+                {
+                    if (sentences[i].Contains(searchTerm))
+                    {
+                        result.Add(i);
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return result;
+        }
+
     }
 }
