@@ -10,13 +10,20 @@ namespace NGrams
     public class StopWorldFilter
     {
 
-        private List<String> sentences;
+        private List<String> sentencesOrg;
+        private List<String> sentences = new List<String>();
         private List<String> stopwords;
 
         public void startCleaning()
         {
-            sentences = ListRender.getInstance().getSentences();
+            sentencesOrg = ListRender.getInstance().getSentences();
             stopwords = ListRender.getInstance().getStopWords();
+
+            foreach (String s in sentencesOrg)
+            {
+                sentences.Add(s);
+            }
+
             startFiltering();
             ListRender.getInstance().setSentencesCleaned(sentences);
 

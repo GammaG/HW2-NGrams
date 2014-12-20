@@ -19,8 +19,10 @@ namespace NGrams
         private static Thread textFilterThread;
         private static Thread loaderThread;
         private static Thread generateNGramsThread;
+        private static Thread printCleanSentencesThread;
         private static String input; 
         private Boolean dataValid = false;
+        private static List<int> resultList = new List<int>();
        
         public Form1()
         {
@@ -95,7 +97,8 @@ namespace NGrams
 
             private void btnPrint_Click(object sender, EventArgs e)
             {
-                new Thread(printSentencesOnConsole).Start();
+                printCleanSentencesThread = new Thread(printSentencesOnConsole);
+                printCleanSentencesThread.Start();
 
             }
 
@@ -108,7 +111,7 @@ namespace NGrams
                 }
                 List<String> temp = ListRender.getInstance().getSentencesClean();
                 foreach (String s in temp)
-                    Console.WriteLine(s);
+                    appendTextBox(s);
             }
 
             private void addTextToResult(String message)
@@ -186,20 +189,46 @@ namespace NGrams
                     appendTextBox("There are no NGrams available.");
                     return;
                 }
-               List<int> list = table.searchNGram(input);
-               if (list.Count == 0)
+
+               resultList = table.searchNGram(input);
+               if (resultList.Count == 0)
                {
-                   appendTextBox("Your term: " + input + " wasn't found.");
+                   appendTextBox("Your term: \"" + input + "\" wasn't found.");
                    return;
                }
-               String temp = "Your NGram: "+input+" was found in line ";
-               foreach (int i in list)
+               String temp = "Your NGram: \""+input+"\" was found in line ";
+               foreach (int i in resultList)
                {
                    temp += i+1 + ", ";
                }
 
                appendTextBox(temp.Substring(0, temp.Length - 2));
             }
+
+            private void btn_print_result_Click(object sender, EventArgs e)
+            {
+                new Thread(printResult).Start();
+            }
+
+        private void printResult(){
+            List<String> list = ListRender.getInstance().getSentences();
+            
+            while(textFilterThread.IsAlive | loaderThread.IsAlive | generateNGramsThread.IsAlive)
+            {
+                Thread.Sleep(250);
+            }
+
+            foreach (int i in resultList)
+            {
+               appendTextBox("\r\n"+ list[i] + "\r\n");
+            }
+        }
+
+        private void btn_abort_Click(object sender, EventArgs e)
+        {
+            if (printCleanSentencesThread.IsAlive)
+                printCleanSentencesThread.Abort();
+        }
 
 
     }

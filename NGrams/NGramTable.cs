@@ -41,6 +41,7 @@ namespace NGrams
 
         public List<int> searchNGram(String ngram)
         {
+
             List<int> temp = new List<int>();
             try
             {
