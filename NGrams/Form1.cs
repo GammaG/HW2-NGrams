@@ -119,6 +119,11 @@ namespace NGrams
 
             private void btnNGrams_Click(object sender, EventArgs e)
             {
+                if (textFilterThread.IsAlive | loaderThread.IsAlive )
+                {
+                    appendTextBox("There is currently a process running, please wait until it has finished.");
+                    return;
+                }
                 if(!dataValid){
                     appendTextBox("There is no input text available, please load data first.");
                     return;
@@ -160,6 +165,11 @@ namespace NGrams
 
             private void search()
             {
+                if (textFilterThread.IsAlive | loaderThread.IsAlive | generateNGramsThread.IsAlive)
+                {
+                    appendTextBox("There is currently a process running, please wait until it has finished.");
+                    return;
+                }
                 NGramTable table = NGramTable.getInstance();
                 if (table.getCount() == 0)
                 {
