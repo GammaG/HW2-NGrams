@@ -39,6 +39,9 @@
             this.btnSearchByTerm = new System.Windows.Forms.Button();
             this.btnSeachForSimilar = new System.Windows.Forms.Button();
             this.btn_printSentenceByID = new System.Windows.Forms.Button();
+            this.minNGrams = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.minNGrams)).BeginInit();
             this.SuspendLayout();
             // 
             // btnLoadF
@@ -146,11 +149,34 @@
             this.btn_printSentenceByID.UseVisualStyleBackColor = true;
             this.btn_printSentenceByID.Click += new System.EventHandler(this.btn_printSentenceByID_Click);
             // 
+            // minNGrams
+            // 
+            this.minNGrams.Location = new System.Drawing.Point(652, 63);
+            this.minNGrams.Name = "minNGrams";
+            this.minNGrams.Size = new System.Drawing.Size(36, 20);
+            this.minNGrams.TabIndex = 13;
+            this.minNGrams.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(543, 65);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(103, 13);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "Min NGram matches";
+            // 
             // MainFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(707, 390);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.minNGrams);
             this.Controls.Add(this.btn_printSentenceByID);
             this.Controls.Add(this.btnSeachForSimilar);
             this.Controls.Add(this.btnSearchByTerm);
@@ -164,6 +190,7 @@
             this.Controls.Add(this.btnLoadF);
             this.Name = "MainFrame";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.minNGrams)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -182,6 +209,8 @@
         private System.Windows.Forms.Button btnSearchByTerm;
         private System.Windows.Forms.Button btnSeachForSimilar;
         private System.Windows.Forms.Button btn_printSentenceByID;
+        private System.Windows.Forms.NumericUpDown minNGrams;
+        private System.Windows.Forms.Label label1;
     }
 }
 

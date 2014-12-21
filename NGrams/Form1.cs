@@ -155,7 +155,12 @@ namespace NGrams
 
             private void btnSearch_Click(object sender, EventArgs e)
             {
-               input = searchBox.Text;
+                if (!finised)
+                {
+                    appendTextBox("There is currently a process running, please wait until it has finished.");
+                    return;
+                }
+                input = searchBox.Text;
                if (input.Length == 0)
                {
                    appendTextBox("Your searchTerm is to short.");
@@ -167,11 +172,7 @@ namespace NGrams
 
             private void search()
             {
-                if (!finised)
-                {
-                    appendTextBox("There is currently a process running, please wait until it has finished.");
-                    return;
-                }
+                
                 NGramTable table = NGramTable.getInstance();
                 if (table.getCount() == 0)
                 {
@@ -224,6 +225,11 @@ namespace NGrams
 
         private void btnSeachForSimilar_Click(object sender, EventArgs e)
         {
+            if (!finised)
+            {
+                appendTextBox("There is currently a process running, please wait until it has finished.");
+                return;
+            }
 
             input = searchBox.Text;
             if (input.Length == 0 )
@@ -252,12 +258,9 @@ namespace NGrams
         }
         private void searchForSimilarSentence()
         {
-            if (!finised)
-            {
-                appendTextBox("There is currently a process running, please wait until it has finished.");
-                return;
-            }
+           
             NGramTable table = NGramTable.getInstance();
+            table.setMinNGrams(Convert.ToInt32(minNGrams.Value));
             if (table.getCount() == 0)
             {
                 appendTextBox("There are no NGrams available.");
@@ -315,7 +318,11 @@ namespace NGrams
 
         private void btnSearchByTerm_Click(object sender, EventArgs e)
         {
-
+            if (!finised)
+            {
+                appendTextBox("There is currently a process running, please wait until it has finished.");
+                return;
+            }
         }
 
 

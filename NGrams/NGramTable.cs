@@ -10,6 +10,7 @@ namespace NGrams
     {
         private Dictionary<String, List<int>> ngramTable = new Dictionary<String,List<int>>();
         private volatile static NGramTable nGramTable;
+        private volatile static int minNGrams = 2;
 
         private NGramTable()
         {
@@ -62,20 +63,49 @@ namespace NGrams
 
         public List<int> searchForSimilarSentence(String number)
         {
-            List<int> result = new List<int>();
+            List<int> similarSentences = new List<int>();
 
             try
             {
                 int num = Convert.ToInt32(number);
-                List<String> sentences = ListRender.getInstance().getSentencesClean();
-                String searchTerm = sentences[num];
-                for (int i = 0; i < sentences.Count; i++)
+                //List<String> sentences = ListRender.getInstance().getSentencesClean();
+                List<String> ngrams = new List<String>();
+
+                foreach (String s in ngramTable.Keys)
                 {
-                    if (sentences[i].Contains(searchTerm))
+                    if (!s.Contains(" "))
                     {
-                        result.Add(i);
+                        continue;
+                    }   
+                    if (ngramTable[s].Contains(num))
+                    {
+                        ngrams.Add(s);
                     }
                 }
+               
+                Dictionary<int,int> counterDic = new Dictionary<int,int>();
+                foreach(String s in ngrams){
+                    List<int> locSentences = ngramTable[s];
+                    foreach (int i in locSentences)
+                    {
+                        if (counterDic.ContainsKey(i))
+                        {
+                            counterDic[i] += 1;
+                        }
+                        else
+                        {
+                            counterDic.Add(i, 1);
+                        }
+                    }
+                }
+                foreach (int i in counterDic.Keys)
+                {
+                    if (counterDic[i] > minNGrams | counterDic[i] == minNGrams)
+                    {
+                        similarSentences.Add(i);
+                    }
+                }
+
 
             }
             catch (Exception e)
@@ -83,7 +113,13 @@ namespace NGrams
                 Console.WriteLine(e);
             }
 
-            return result;
+            return similarSentences;
+        }
+
+        public void setMinNGrams(int i)
+        {
+            if(i<0)
+            minNGrams = i;
         }
 
     }
