@@ -23,8 +23,8 @@ namespace NGrams
         private static Thread printCleanSentencesThread;
         private static Thread printResultSentencesThread;
         private static String input; 
-        private Boolean dataValid = false;
         private static List<int> resultList = new List<int>();
+        private static Boolean finised = false;
        
         public MainFrame()
         {
@@ -39,10 +39,7 @@ namespace NGrams
             if (languageBox.SelectedIndex.Equals("English"))
                 language = Constant.ENG;
 
-            if (dataValid)
-            {
-                appendTextBox("New Datasource has been set, please run NGram generation again.");
-            }
+            finised = false;
             loaderThread = new Thread(new Loader().loadInformation);
             loaderThread.Start();
 
@@ -73,7 +70,8 @@ namespace NGrams
             textFilterThread.Start();
 
             new Thread(checkThreadFilter).Start();
-            dataValid = true;
+            
+
         }
 
 
@@ -84,6 +82,12 @@ namespace NGrams
                 Thread.Sleep(250);
             }
             appendTextBox("StopWordsFilter has finished.\r\n");
+
+            appendTextBox("NGram generation started.");
+            generateNGramsThread = new Thread(genNGrams);
+            generateNGramsThread.Start();
+
+            new Thread(checkNGramGeneration).Start();
         }
        
 
@@ -106,7 +110,7 @@ namespace NGrams
 
             private void printAllSentences()
             {
-                if (textFilterThread.IsAlive | loaderThread.IsAlive | generateNGramsThread.IsAlive)
+                if (!finised)
                 {
                     appendTextBox("There is currently a process running, please wait until it has finished.");
                     return;
@@ -132,25 +136,7 @@ namespace NGrams
                 addTextToResult(value);
             }
 
-            private void btnNGrams_Click(object sender, EventArgs e)
-            {
-                if (textFilterThread.IsAlive | loaderThread.IsAlive )
-                {
-                    appendTextBox("There is currently a process running, please wait until it has finished.");
-                    return;
-                }
-                if(!dataValid){
-                    appendTextBox("There is no input text available, please load data first.");
-                    return;
-                }
-                appendTextBox("NGram generation started.");
-                generateNGramsThread = new Thread(genNGrams);
-                generateNGramsThread.Start();
-
-                new Thread(checkNGramGeneration).Start();
-
-
-            }
+          
 
             private void genNGrams()
             {
@@ -164,6 +150,7 @@ namespace NGrams
                     Thread.Sleep(250);
                 }
                 appendTextBox("NGram generation has finished.");
+                finised = true;
             }
 
             private void btnSearch_Click(object sender, EventArgs e)
@@ -180,7 +167,7 @@ namespace NGrams
 
             private void search()
             {
-                if (textFilterThread.IsAlive | loaderThread.IsAlive | generateNGramsThread.IsAlive )
+                if (!finised)
                 {
                     appendTextBox("There is currently a process running, please wait until it has finished.");
                     return;
@@ -215,8 +202,8 @@ namespace NGrams
 
         private void printResult(){
             List<String> list = ListRender.getInstance().getSentences();
-            
-            while(textFilterThread.IsAlive | loaderThread.IsAlive | generateNGramsThread.IsAlive)
+
+            while (!finised)
             {
                 Thread.Sleep(250);
             }
@@ -265,7 +252,7 @@ namespace NGrams
         }
         private void searchForSimilarSentence()
         {
-            if (textFilterThread.IsAlive | loaderThread.IsAlive | generateNGramsThread.IsAlive)
+            if (!finised)
             {
                 appendTextBox("There is currently a process running, please wait until it has finished.");
                 return;
@@ -298,7 +285,7 @@ namespace NGrams
         private void btn_printSentenceByID_Click(object sender, EventArgs e)
         {
 
-            if (textFilterThread.IsAlive | loaderThread.IsAlive | generateNGramsThread.IsAlive)
+            if (!finised)
             {
                 appendTextBox("There is currently a process running, please wait until it has finished.");
                 return;
@@ -324,6 +311,11 @@ namespace NGrams
             }
 
             appendTextBox(ListRender.getInstance().getSentenceFromCollection(num));
+        }
+
+        private void btnSearchByTerm_Click(object sender, EventArgs e)
+        {
+
         }
 
 

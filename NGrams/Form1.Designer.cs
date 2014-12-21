@@ -32,7 +32,6 @@
             this.btnPrint = new System.Windows.Forms.Button();
             this.resultsText = new System.Windows.Forms.RichTextBox();
             this.languageBox = new System.Windows.Forms.ComboBox();
-            this.btnNGrams = new System.Windows.Forms.Button();
             this.searchBox = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.btn_print_result = new System.Windows.Forms.Button();
@@ -80,16 +79,6 @@
             this.languageBox.Size = new System.Drawing.Size(121, 21);
             this.languageBox.TabIndex = 4;
             // 
-            // btnNGrams
-            // 
-            this.btnNGrams.Location = new System.Drawing.Point(12, 64);
-            this.btnNGrams.Name = "btnNGrams";
-            this.btnNGrams.Size = new System.Drawing.Size(121, 23);
-            this.btnNGrams.TabIndex = 5;
-            this.btnNGrams.Text = "Generate NGrams";
-            this.btnNGrams.UseVisualStyleBackColor = true;
-            this.btnNGrams.Click += new System.EventHandler(this.btnNGrams_Click);
-            // 
             // searchBox
             // 
             this.searchBox.Location = new System.Drawing.Point(171, 12);
@@ -135,6 +124,7 @@
             this.btnSearchByTerm.TabIndex = 10;
             this.btnSearchByTerm.Text = "Search by Term";
             this.btnSearchByTerm.UseVisualStyleBackColor = true;
+            this.btnSearchByTerm.Click += new System.EventHandler(this.btnSearchByTerm_Click);
             // 
             // btnSeachForSimilar
             // 
@@ -168,7 +158,6 @@
             this.Controls.Add(this.btn_print_result);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.searchBox);
-            this.Controls.Add(this.btnNGrams);
             this.Controls.Add(this.languageBox);
             this.Controls.Add(this.resultsText);
             this.Controls.Add(this.btnPrint);
@@ -186,7 +175,6 @@
         private System.Windows.Forms.Button btnPrint;
         private System.Windows.Forms.RichTextBox resultsText;
         private System.Windows.Forms.ComboBox languageBox;
-        private System.Windows.Forms.Button btnNGrams;
         private System.Windows.Forms.TextBox searchBox;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Button btn_print_result;
