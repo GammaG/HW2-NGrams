@@ -349,8 +349,42 @@ namespace NGrams
                 appendTextBox("There is currently a process running, please wait until it has finished.");
                 return;
             }
+            input = searchBox.Text;
+            if (input.Length == 0)
+            {
+                appendTextBox("Your searchTerm is to short.");
+                return;
+            }
+            if (!input.Contains(" "))
+            {
+                appendTextBox("Please use at least 2 words for a valid search!");
+                return;
+            }
+            new Thread(searchMatchingPattern).Start();
         }
 
+        private void searchMatchingPattern()
+        {
+            NGramTable table = NGramTable.getInstance();
+
+
+
+            resultList = table.searchForSentencesContainingNGrams(input);
+            if (resultList.Count == 0)
+            {
+                appendTextBox("No sentences have been found to your given NGram: \"" + input + "\" has been found.");
+                return;
+            }
+
+
+            String temp = "\r\nYour NGrams: \"" + input + "\" have been found in: ";
+            foreach (int i in resultList)
+            {
+                temp += i + 1 + ", ";
+            }
+
+            appendTextBox(temp.Substring(0, temp.Length - 2));
+        }
 
     }
 }

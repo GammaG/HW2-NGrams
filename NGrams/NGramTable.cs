@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace NGrams
@@ -120,6 +121,36 @@ namespace NGrams
             return similarSentences;
         }
 
-       
+        public List<int> searchForSentencesContainingNGrams(String input)
+        {
+            List<int> list = new List<int>();
+
+            Regex regex = new Regex("[ ]+");
+            String[] array = regex.Split(input);
+
+            List<String> ngrams = new List<string>();
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                ngrams.Add(array[i] + " " + array[i + 1]);
+            }
+
+            foreach (String ngram in ngrams)
+            {
+                if (ngramTable.ContainsKey(ngram))
+                {
+                    foreach (int i in ngramTable[ngram])
+                    {
+                        if (!list.Contains(i))
+                        {
+                            list.Add(i);
+                        }
+                    }
+                }
+            }
+
+            return list;
+        }
+
+
     }
 }
