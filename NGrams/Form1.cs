@@ -110,6 +110,11 @@ namespace NGrams
 
             private void printAllSentences()
             {
+                if (NGramTable.getInstance().getCount() == 0)
+                {
+                    appendTextBox("Please load data first.");
+                    return;
+                }
                 if (!finised)
                 {
                     appendTextBox("There is currently a process running, please wait until it has finished.");
@@ -155,6 +160,11 @@ namespace NGrams
 
             private void btnSearch_Click(object sender, EventArgs e)
             {
+                if (NGramTable.getInstance().getCount() == 0)
+                {
+                    appendTextBox("There are no NGrams available.");
+                    return;
+                }
                 if (!finised)
                 {
                     appendTextBox("There is currently a process running, please wait until it has finished.");
@@ -197,11 +207,17 @@ namespace NGrams
 
             private void btn_print_result_Click(object sender, EventArgs e)
             {
+                if (!finised)
+                {
+                    appendTextBox("There is currently a process running, please wait until it has finished.");
+                    return;
+                }
               printResultSentencesThread = new Thread(printResult);
               printResultSentencesThread.Start();
             }
 
         private void printResult(){
+
             List<String> list = ListRender.getInstance().getSentences();
 
             while (!finised)
@@ -225,6 +241,11 @@ namespace NGrams
 
         private void btnSeachForSimilar_Click(object sender, EventArgs e)
         {
+            if (NGramTable.getInstance().getCount() == 0)
+            {
+                appendTextBox("There are no NGrams available.");
+                return;
+            }
             if (!finised)
             {
                 appendTextBox("There is currently a process running, please wait until it has finished.");
@@ -260,14 +281,10 @@ namespace NGrams
         {
            
             NGramTable table = NGramTable.getInstance();
-            table.setMinNGrams(Convert.ToInt32(minNGrams.Value));
-            if (table.getCount() == 0)
-            {
-                appendTextBox("There are no NGrams available.");
-                return;
-            }
+          
+           
 
-            resultList = table.searchForSimilarSentence(input);
+            resultList = table.searchForSimilarSentence(input, Convert.ToInt32(minNGrams.Value));
             if (resultList.Count == 0)
             {
                 appendTextBox("No sentences similar to your choosen: \"" + input + "\" has been found.");
@@ -287,7 +304,11 @@ namespace NGrams
 
         private void btn_printSentenceByID_Click(object sender, EventArgs e)
         {
-
+            if (NGramTable.getInstance().getCount() == 0)
+            {
+                appendTextBox("Please load data first.");
+                return;
+            }
             if (!finised)
             {
                 appendTextBox("There is currently a process running, please wait until it has finished.");
@@ -318,6 +339,11 @@ namespace NGrams
 
         private void btnSearchByTerm_Click(object sender, EventArgs e)
         {
+            if (NGramTable.getInstance().getCount() == 0)
+            {
+                appendTextBox("There are no NGrams available.");
+                return;
+            }
             if (!finised)
             {
                 appendTextBox("There is currently a process running, please wait until it has finished.");

@@ -10,7 +10,7 @@ namespace NGrams
     {
         private Dictionary<String, List<int>> ngramTable = new Dictionary<String,List<int>>();
         private volatile static NGramTable nGramTable;
-        private volatile static int minNGrams = 2;
+       
 
         private NGramTable()
         {
@@ -61,9 +61,13 @@ namespace NGrams
             return ngramTable.Keys.Count;
         }
 
-        public List<int> searchForSimilarSentence(String number)
+        public List<int> searchForSimilarSentence(String number, int minNGrams)
         {
             List<int> similarSentences = new List<int>();
+            if (minNGrams < 0)
+            {
+                minNGrams = 2;
+            }
 
             try
             {
@@ -116,11 +120,6 @@ namespace NGrams
             return similarSentences;
         }
 
-        public void setMinNGrams(int i)
-        {
-            if(i<0)
-            minNGrams = i;
-        }
-
+       
     }
 }
