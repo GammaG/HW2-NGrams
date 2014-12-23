@@ -28,6 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.btnLoadF = new System.Windows.Forms.Button();
             this.btnPrint = new System.Windows.Forms.Button();
             this.resultsText = new System.Windows.Forms.RichTextBox();
@@ -41,7 +44,10 @@
             this.btn_printSentenceByID = new System.Windows.Forms.Button();
             this.minNGrams = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
+            this.resultTimes = new System.Windows.Forms.RichTextBox();
+            this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)(this.minNGrams)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             this.SuspendLayout();
             // 
             // btnLoadF
@@ -68,7 +74,7 @@
             // 
             this.resultsText.Location = new System.Drawing.Point(12, 116);
             this.resultsText.Name = "resultsText";
-            this.resultsText.Size = new System.Drawing.Size(683, 262);
+            this.resultsText.Size = new System.Drawing.Size(447, 262);
             this.resultsText.TabIndex = 3;
             this.resultsText.Text = "";
             // 
@@ -170,11 +176,37 @@
             this.label1.TabIndex = 14;
             this.label1.Text = "Min NGram matches";
             // 
+            // resultTimes
+            // 
+            this.resultTimes.Location = new System.Drawing.Point(465, 116);
+            this.resultTimes.Name = "resultTimes";
+            this.resultTimes.Size = new System.Drawing.Size(223, 261);
+            this.resultTimes.TabIndex = 15;
+            this.resultTimes.Text = "";
+            // 
+            // chart
+            // 
+            chartArea2.Name = "ChartArea1";
+            this.chart.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart.Legends.Add(legend2);
+            this.chart.Location = new System.Drawing.Point(694, 11);
+            this.chart.Name = "chart";
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chart.Series.Add(series2);
+            this.chart.Size = new System.Drawing.Size(362, 366);
+            this.chart.TabIndex = 16;
+            this.chart.Text = "chart";
+            // 
             // MainFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(707, 390);
+            this.ClientSize = new System.Drawing.Size(1068, 390);
+            this.Controls.Add(this.chart);
+            this.Controls.Add(this.resultTimes);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.minNGrams);
             this.Controls.Add(this.btn_printSentenceByID);
@@ -191,6 +223,7 @@
             this.Name = "MainFrame";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.minNGrams)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -211,6 +244,8 @@
         private System.Windows.Forms.Button btn_printSentenceByID;
         private System.Windows.Forms.NumericUpDown minNGrams;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.RichTextBox resultTimes;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart;
     }
 }
 

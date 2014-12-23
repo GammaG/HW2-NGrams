@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 
 namespace NGrams
@@ -25,11 +27,17 @@ namespace NGrams
         private static String input; 
         private static List<int> resultList = new List<int>();
         private static Boolean finised = false;
+        private static volatile Stopwatch timer = new Stopwatch(); 
+        private static String NGRAM = "NGram";
+        private static String TERM = "Terms";
+        private static String SIMILAR = "Similar";
+
        
         public MainFrame()
         {
             InitializeComponent();
             languageBox.SelectedIndex = 0;
+            chart.Series.Clear();
         }
 
 
@@ -51,6 +59,8 @@ namespace NGrams
 
         private void checkThreadLoader()
         {
+            timer.Reset();
+            timer.Start();
             while (loaderThread.IsAlive)
             {
                 Thread.Sleep(250);
@@ -66,17 +76,21 @@ namespace NGrams
             appendTextBox(listRender.getStopWords().Count + " stopwords were loaded.");
 
             appendTextBox("StopWordsFilter active please wait...");
+            timer.Stop();
+            appendTimeBox(timer.ElapsedTicks + " Ticks for Loading");
             textFilterThread = new Thread(new StopWorldFilter().startCleaning);
             textFilterThread.Start();
 
             new Thread(checkThreadFilter).Start();
-            
+          
 
         }
 
 
         private void checkThreadFilter()
         {
+            timer.Reset();
+            timer.Start();
             while (textFilterThread.IsAlive)
             {
                 Thread.Sleep(250);
@@ -86,6 +100,9 @@ namespace NGrams
             appendTextBox("NGram generation started.");
             generateNGramsThread = new Thread(genNGrams);
             generateNGramsThread.Start();
+
+            timer.Stop();
+            appendTimeBox(timer.ElapsedTicks + " Ticks for Filtering");
 
             new Thread(checkNGramGeneration).Start();
         }
@@ -141,6 +158,17 @@ namespace NGrams
                 addTextToResult(value);
             }
 
+            private void appendTimeBox(string value)
+            {
+                if (InvokeRequired)
+                {
+                    this.Invoke(new Action<string>(appendTimeBox), new object[] { value });
+                    return;
+                }
+              
+                resultTimes.AppendText(value + "\r\n");
+            }
+
           
 
             private void genNGrams()
@@ -150,12 +178,16 @@ namespace NGrams
 
             private void checkNGramGeneration()
             {
+                timer.Reset();
+                timer.Start();
                 while (generateNGramsThread.IsAlive)
                 {
                     Thread.Sleep(250);
                 }
                 appendTextBox("NGram generation has finished.");
                 finised = true;
+                timer.Stop();
+                appendTimeBox(timer.ElapsedTicks + " Ticks for NGram Generation");
             }
 
             private void btnSearch_Click(object sender, EventArgs e)
@@ -182,7 +214,8 @@ namespace NGrams
 
             private void search()
             {
-                
+                timer.Reset();
+                timer.Start();
                 NGramTable table = NGramTable.getInstance();
                 if (table.getCount() == 0)
                 {
@@ -201,8 +234,10 @@ namespace NGrams
                {
                    temp += i+1 + ", ";
                }
-
+               timer.Stop();
+               appendTimeBox(timer.ElapsedTicks + " Ticks for NGram Search"); 
                appendTextBox(temp.Substring(0, temp.Length - 2));
+               appendChart(timer.ElapsedTicks, NGRAM);
             }
 
             private void btn_print_result_Click(object sender, EventArgs e)
@@ -263,6 +298,7 @@ namespace NGrams
             if (!match.Success)
             {
                 appendTextBox("Please enter a number out of the collection to match for.");
+                return;
             }
 
             int num = Convert.ToInt32(input);
@@ -272,18 +308,19 @@ namespace NGrams
                 appendTextBox("Your choosen sentence does not exist in the collection, max index is "+temp);
             }
 
-            appendTextBox("Your sentence is: \"" + ListRender.getInstance().getSentenceFromCollection(num)+"\"\r\n");
+            appendTextBox("\r\nYour sentence is: " + ListRender.getInstance().getSentenceFromCollection(num)+"\r\n");
 
             new Thread(searchForSimilarSentence).Start();
            
         }
         private void searchForSimilarSentence()
         {
-           
-            NGramTable table = NGramTable.getInstance();
-          
-           
 
+
+            timer.Reset();
+            timer.Start();
+            NGramTable table = NGramTable.getInstance();
+   
             resultList = table.searchForSimilarSentence(input, Convert.ToInt32(minNGrams.Value));
             if (resultList.Count == 0)
             {
@@ -298,7 +335,10 @@ namespace NGrams
                 temp += i + 1 + ", ";
             }
 
+            timer.Stop();
+            appendTimeBox(timer.ElapsedTicks + " Ticks for Similar Search");
             appendTextBox(temp.Substring(0, temp.Length - 2));
+            appendChart(timer.ElapsedTicks, SIMILAR); 
 
         }
 
@@ -365,10 +405,11 @@ namespace NGrams
 
         private void searchMatchingPattern()
         {
+
+            timer.Reset();
+            timer.Start();
             NGramTable table = NGramTable.getInstance();
-
-
-
+            
             resultList = table.searchForSentencesContainingNGrams(input);
             if (resultList.Count == 0)
             {
@@ -383,8 +424,43 @@ namespace NGrams
                 temp += i + 1 + ", ";
             }
 
+            timer.Stop();
+            appendTimeBox(timer.ElapsedTicks + " Ticks for Term Search");
             appendTextBox(temp.Substring(0, temp.Length - 2));
+            appendChart(timer.ElapsedTicks, TERM); 
         }
 
+
+        private void appendChart(long value, string mode)
+        {
+            if (InvokeRequired)
+            {
+                this.Invoke(new Action<long, string>(appendChart), new object[] { value, mode });
+                return;
+            }
+
+          
+            if (!chart.Series.IsUniqueName(mode))
+            {
+                chart.Series.Remove(chart.Series[mode]);
+
+            }
+
+            chart.Series.Add(mode);
+            chart.Series[mode].ChartType = SeriesChartType.Column;
+            chart.ChartAreas[0].AxisY.Title = "cpuTimes";
+            
+            if(mode.Equals(NGRAM))
+                chart.Series[mode].Points.AddXY(1, value);
+
+            if (mode.Equals(TERM))
+                chart.Series[mode].Points.AddXY(2, value);
+
+            if (mode.Equals(SIMILAR))
+                chart.Series[mode].Points.AddXY(3, value);
+
+
+        }
     }
 }
+
