@@ -72,21 +72,26 @@ namespace NGrams
 
             try
             {
-                int num = Convert.ToInt32(number);
-                //List<String> sentences = ListRender.getInstance().getSentencesClean();
-                List<String> ngrams = new List<String>();
 
-                foreach (String s in ngramTable.Keys)
+               
+
+                int num = Convert.ToInt32(number);
+                List<String> sentences = ListRender.getInstance().getSentencesClean();
+                String sentence = sentences[num];
+          
+
+                Regex regex = new Regex("[ ]+");
+                String[] array = regex.Split(sentence);
+
+                List<String> ngrams = new List<string>();
+                for (int i = 0; i < array.Length - 1; i++)
                 {
-                    if (!s.Contains(" "))
-                    {
-                        continue;
-                    }   
-                    if (ngramTable[s].Contains(num))
-                    {
-                        ngrams.Add(s);
-                    }
+                    ngrams.Add(array[i] + " " + array[i + 1]);
                 }
+
+
+               
+              
                
                 Dictionary<int,int> counterDic = new Dictionary<int,int>();
                 foreach(String s in ngrams){
