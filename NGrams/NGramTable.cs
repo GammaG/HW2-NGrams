@@ -62,34 +62,41 @@ namespace NGrams
             return ngramTable.Keys.Count;
         }
 
-        public List<int> searchForSimilarSentence(String number, int minNGrams)
+        public List<int> searchForSimilarSentence(String numbers, int minNGrams)
         {
+
+            Regex regex = new Regex("[ ]+");
+            string[] splitedNumbers = regex.Split(numbers);
+
             List<int> similarSentences = new List<int>();
             if (minNGrams < 0)
             {
                 minNGrams = 2;
             }
 
+
             try
             {
 
-               
+                List<String> sentences = ListRender.getInstance().getSentencesClean();
+                List<String> ngrams = new List<string>();
+                foreach (String number in splitedNumbers)
+                {
 
                 int num = Convert.ToInt32(number);
-                List<String> sentences = ListRender.getInstance().getSentencesClean();
+               
                 String sentence = sentences[num];
           
-
-                Regex regex = new Regex("[ ]+");
                 String[] array = regex.Split(sentence);
 
-                List<String> ngrams = new List<string>();
                 for (int i = 0; i < array.Length - 1; i++)
                 {
-                    ngrams.Add(array[i] + " " + array[i + 1]);
+                    String t = array[i] + " " + array[i + 1];
+                    if(!ngrams.Contains(t))
+                        ngrams.Add(t);
                 }
 
-
+               }
                
               
                
@@ -115,7 +122,7 @@ namespace NGrams
                         similarSentences.Add(i);
                     }
                 }
-
+               
 
             }
             catch (Exception e)

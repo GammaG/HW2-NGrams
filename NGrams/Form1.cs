@@ -294,21 +294,29 @@ namespace NGrams
                 return;
             }
 
-            Match match = Regex.Match(input, "[0-9]+");
+            Match match = Regex.Match(input, "[0-9 ]+");
             if (!match.Success)
             {
-                appendTextBox("Please enter a number out of the collection to match for.");
+                appendTextBox("Please enter a number or more seperated by ' ' out of the collection to match for.");
                 return;
             }
 
-            int num = Convert.ToInt32(input);
             int temp = ListRender.getInstance().getSentencesClean().Count;
-            if (num < 0 | num > temp)
+            Regex regex = new Regex("[ ]+");
+            string[] array = regex.Split(input);
+            foreach (String s in array)
             {
-                appendTextBox("Your choosen sentence does not exist in the collection, max index is "+temp);
-            }
+                int num = Convert.ToInt32(s);
+                if (num < 0 | num > temp)
+                {
+                    appendTextBox("Your choosen sentence does not exist in the collection, max index is " + temp);
+                }
 
-            appendTextBox("\r\nYour sentence is: " + ListRender.getInstance().getSentenceFromCollection(num)+"\r\n");
+                appendTextBox("\r\n Sentence to match for: " + ListRender.getInstance().getSentenceFromCollection(num) + "\r\n");
+
+            }
+            
+               
 
             new Thread(searchForSimilarSentence).Start();
            
