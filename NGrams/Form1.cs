@@ -295,7 +295,7 @@ namespace NGrams
                 return;
             }
 
-            Match match = Regex.Match(input, "[0-9 ]+");
+            Match match = Regex.Match(input, "[0-9]+");
             if (!match.Success)
             {
                 appendTextBox("Please enter a number or more seperated by ' ' out of the collection to match for.");
@@ -305,6 +305,7 @@ namespace NGrams
             int temp = ListRender.getInstance().getSentencesClean().Count;
             Regex regex = new Regex("[ ]+");
             string[] array = regex.Split(input);
+            try { 
             foreach (String s in array)
             {
                 int num = Convert.ToInt32(s);
@@ -315,6 +316,13 @@ namespace NGrams
 
                 appendTextBox("\r\n Sentence to match for: " + ListRender.getInstance().getSentenceFromCollection(num) + "\r\n");
 
+            }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                appendTextBox("At least of your terms wasn't valid.");
+                return;
             }
             
                
