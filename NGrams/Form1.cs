@@ -238,6 +238,7 @@ namespace NGrams
                appendTimeBox(timer.ElapsedTicks + " Ticks for NGram Search"); 
                appendTextBox(temp.Substring(0, temp.Length - 2));
                appendChart(timer.ElapsedTicks, NGRAM);
+               new Thread(generateLevenshteinDistance).Start();
             }
 
             private void btn_print_result_Click(object sender, EventArgs e)
@@ -346,7 +347,8 @@ namespace NGrams
             timer.Stop();
             appendTimeBox(timer.ElapsedTicks + " Ticks for Similar Search");
             appendTextBox(temp.Substring(0, temp.Length - 2));
-            appendChart(timer.ElapsedTicks, SIMILAR); 
+            appendChart(timer.ElapsedTicks, SIMILAR);
+            new Thread(generateLevenshteinDistance).Start();
 
         }
 
@@ -435,7 +437,8 @@ namespace NGrams
             timer.Stop();
             appendTimeBox(timer.ElapsedTicks + " Ticks for Term Search");
             appendTextBox(temp.Substring(0, temp.Length - 2));
-            appendChart(timer.ElapsedTicks, TERM); 
+            appendChart(timer.ElapsedTicks, TERM);
+            new Thread(generateLevenshteinDistance).Start();
         }
 
 
@@ -469,6 +472,34 @@ namespace NGrams
 
 
         }
+
+        private void generateLevenshteinDistance()
+        {
+            if (resultList.Count < 1)
+            {
+                return;
+            }
+            LevenshteinDistance levenshteinDistance = LevenshteinDistance.getInstance();
+            levenshteinDistance.clear();
+            levenshteinDistance.setSerachTerm(input);
+            levenshteinDistance.setResultSet(resultList);
+
+            List<String> result = levenshteinDistance.generateDistance();
+            if (result.Count > 0)
+            {
+                appendTimeBox("");
+                appendTimeBox("LevenshteinDistance for: "+input+"\r\n");
+                appendTimeBox("Changes are needed to change the input into the result:");
+
+                foreach (String s in result)
+                {
+                    appendTimeBox(s);
+                }
+                appendTimeBox("");
+            }
+            
+        }
+
     }
 }
 
