@@ -31,6 +31,7 @@ namespace NGrams
         private static String NGRAM = "NGram";
         private static String TERM = "Terms";
         private static String SIMILAR = "Similar";
+        private static String sentencesForLGen = "";
 
        
         public MainFrame()
@@ -305,6 +306,7 @@ namespace NGrams
             int temp = ListRender.getInstance().getSentencesClean().Count;
             Regex regex = new Regex("[ ]+");
             string[] array = regex.Split(input);
+            sentencesForLGen = "";
             try { 
             foreach (String s in array)
             {
@@ -314,6 +316,7 @@ namespace NGrams
                     appendTextBox("Your choosen sentence does not exist in the collection, max index is " + temp);
                 }
 
+                sentencesForLGen += ListRender.getInstance().getSentenceFromCollection(num) + " ";
                 appendTextBox("\r\n Sentence to match for: " + ListRender.getInstance().getSentenceFromCollection(num) + "\r\n");
 
             }
@@ -353,6 +356,7 @@ namespace NGrams
             }
 
             timer.Stop();
+            input = "";
             appendTimeBox(timer.ElapsedTicks + " Ticks for Similar Search");
             appendTextBox(temp.Substring(0, temp.Length - 2));
             appendChart(timer.ElapsedTicks, SIMILAR);
@@ -427,8 +431,16 @@ namespace NGrams
             timer.Reset();
             timer.Start();
             NGramTable table = NGramTable.getInstance();
-            
-            resultList = table.searchForSentencesContainingNGrams(input);
+
+            if (input.Equals(""))
+            {
+                resultList = table.searchForSentencesContainingNGrams(sentencesForLGen);
+            }
+            else
+            {
+                resultList = table.searchForSentencesContainingNGrams(input);
+            }
+
             if (resultList.Count == 0)
             {
                 appendTextBox("No sentences have been found to your given NGram: \"" + input + "\" has been found.");
