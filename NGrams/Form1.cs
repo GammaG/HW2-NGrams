@@ -305,7 +305,7 @@ namespace NGrams
 
             int temp = ListRender.getInstance().getSentencesClean().Count;
             Regex regex = new Regex("[ ]+");
-            string[] array = regex.Split(input);
+            string[] array = regex.Split(input);    
             sentencesForLGen = "";
             try { 
             foreach (String s in array)
